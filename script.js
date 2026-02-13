@@ -86,15 +86,30 @@ songTitle.textContent = "Your Favorite Song";
 let isSeeking = false;
 
 playBtn.addEventListener("click", async () => {
-  if (!audio.src) return;
+  const sourceEl = audio.querySelector("source");
 
-  if (audio.paused) {
-    try { await audio.play(); } catch (e) {}
-  } else {
-    audio.pause();
+  // Make sure the <source> exists
+  if (!sourceEl || !sourceEl.getAttribute("src")) {
+    console.error("No audio source found.");
+    return;
   }
+
+  // Ensure browser loads the file
+  audio.load();
+
+  try {
+    if (audio.paused) {
+      await audio.play();
+    } else {
+      audio.pause();
+    }
+  } catch (e) {
+    console.error("Audio play failed:", e);
+  }
+
   syncPlayIcon();
 });
+
 
 audio.addEventListener("play", syncPlayIcon);
 audio.addEventListener("pause", syncPlayIcon);
