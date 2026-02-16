@@ -86,17 +86,6 @@ songTitle.textContent = "Your Favorite Song";
 let isSeeking = false;
 
 playBtn.addEventListener("click", async () => {
-  const sourceEl = audio.querySelector("source");
-
-  // Make sure the <source> exists
-  if (!sourceEl || !sourceEl.getAttribute("src")) {
-    console.error("No audio source found.");
-    return;
-  }
-
-  // Ensure browser loads the file
-  audio.load();
-
   try {
     if (audio.paused) {
       await audio.play();
@@ -106,9 +95,8 @@ playBtn.addEventListener("click", async () => {
   } catch (e) {
     console.error("Audio play failed:", e);
   }
-
-  syncPlayIcon();
 });
+
 
 
 audio.addEventListener("play", syncPlayIcon);
@@ -155,3 +143,38 @@ function formatTime(seconds) {
 // Like buttons (tiny interaction)
 document.getElementById("likeBtn").addEventListener("click", () => burstHearts(10));
 document.getElementById("heartOutlineBtn").addEventListener("click", () => burstHearts(10));
+
+const polaroidImgs = Array.from(document.querySelectorAll(".polaroid img"));
+
+const photoPool = [
+  "assets/photo1.jpg",
+  "assets/photo2.jpg",
+  "assets/photo3.jpg",
+  "assets/photo4.jpg",
+  "assets/photo5.jpg",
+  // add all your images here
+];
+
+let swapIndex = 0;
+
+function swapPolaroidImages() {
+  if (!polaroidImgs.length) return;
+
+  polaroidImgs.forEach((img, i) => {
+    const nextSrc = photoPool[(swapIndex + i) % photoPool.length];
+
+    img.classList.add("fade-out");
+
+    setTimeout(() => {
+      img.src = nextSrc;
+
+      img.onload = () => {
+        img.classList.remove("fade-out");
+      };
+    }, 350);
+  });
+
+  swapIndex = (swapIndex + 1) % photoPool.length;
+}
+
+setInterval(swapPolaroidImages, 8000);

@@ -373,3 +373,23 @@ body{
   .center{ order: 2; }
   .left{ order: 1; }
 }
+/* Smooth fade transition for polaroid images */
+.polaroid img {
+  transition: opacity 0.35s ease-in-out;
+}
+
+.polaroid img.fade-out {
+  opacity: 0;
+}
+/* Cute floating / swaying bouquet */
+.bouquet{
+  transform-origin: 50% 80%;
+  animation: bouquetFloat 4.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes bouquetFloat{
+  0%   { transform: translateY(0) rotate(-1.2deg) scale(1); }
+  50%  { transform: translateY(-10px) rotate(1.2deg) scale(1.01); }
+  100% { transform: translateY(0) rotate(-1.2deg) scale(1); }
+}
